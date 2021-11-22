@@ -134,7 +134,7 @@ session_start();
                                 $sql = "SELECT first_name FROM user_info WHERE user_id='$_SESSION[uid]'";
                                 $query = mysqli_query($con,$sql);
                                 $row=mysqli_fetch_array($query);
-                                if ($row == null){
+                                if ($row === null){
 																	$sql = "SELECT admin_name FROM admin_info WHERE admin_id='$_SESSION[uid]'";
 																	$query = mysqli_query($con,$sql);
 	                                $row=mysqli_fetch_array($query);
