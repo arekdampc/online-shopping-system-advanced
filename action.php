@@ -501,7 +501,7 @@ if (isset($_POST["Common"])) {
 					<tr>
 						<th style="width: 30%">Product</th>
 						<th style="width: 10%">Price</th>
-						<th style="width: 8%">Qantity</th>
+						<th style="width: 8%">Quantity</th>
 						<th style="width: 7%"" class="text-center>Subtotal</th>
 						<th style="width: 10%"></th>
 					</tr>
