@@ -15,14 +15,14 @@ include 'header.php';
         global.setTimeout(function () {
             global.location.href += "!";
         }, 50);
-    };	
+    };
 	// Earlier we had setInerval here....
     global.onhashchange = function () {
         if (global.location.hash !== _hash) {
             global.location.hash = _hash;
         }
     };
-    global.onload = function () {        
+    global.onload = function () {
 		noBackPlease();
 		// disables backspace on page except on input fields and textarea..
 		document.body.onkeydown = function (e) {
@@ -32,12 +32,12 @@ include 'header.php';
             }
             // stopping event bubbling up the DOM tree..
             e.stopPropagation();
-        };		
+        };
     };
 })(window);
 </script>
-      <div class="main main-raised"> 
-        
+      <div class="main main-raised">
+
 		<div class="section">
 			<!-- container -->
 			<div class="container">
@@ -56,13 +56,13 @@ include 'header.php';
 							<div class="price-filter">
 								<div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal"><div class="noUi-base"><div class="noUi-origin" style="left: 0%;"><div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="100.0" aria-valuenow="0.0" aria-valuetext="1.00" style="z-index: 5;"></div></div><div class="noUi-connect" style="left: 0%; right: 0%;"></div><div class="noUi-origin" style="left: 100%;"><div class="noUi-handle noUi-handle-upper" data-handle="1" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="100.0" aria-valuenow="100.0" aria-valuetext="999.00" style="z-index: 4;"></div></div></div></div>
 								<div class="input-number price-min">
-									<input id="price-min" type="number">
+									<input id="price-min" onkeydown="javascript: return event.keyCode == 69 | 189 ? false : true" type="number">
 									<span class="qty-up">+</span>
 									<span class="qty-down">-</span>
 								</div>
 								<span>-</span>
 								<div class="input-number price-max">
-									<input id="price-max" type="number">
+                  <input id="price-max" onkeydown="javascript: return event.keyCode == 69 | 189 ? false : true" type="number">
 									<span class="qty-up">+</span>
 									<span class="qty-down">-</span>
 								</div>
@@ -80,7 +80,7 @@ include 'header.php';
 							<h3 class="aside-title">Top selling</h3>
 							<div id="get_product_home">
 								<!-- product widget -->
-								
+
 								<!-- product widget -->
 							</div>
 						</div>
@@ -124,7 +124,7 @@ include 'header.php';
 							<div id="get_product">
 							<!--Here we get product jquery Ajax Request-->
 						</div>
-							
+
 							<!-- /product -->
 						</div>
 						<!-- /store products -->
@@ -134,7 +134,7 @@ include 'header.php';
 							<span class="store-qty">Showing 20-100 products</span>
 							<ul class="store-pagination" id="pageno">
 								<li ><a class="active" href="#aside">1</a></li>
-								
+
 								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
 							</ul>
 						</div>
