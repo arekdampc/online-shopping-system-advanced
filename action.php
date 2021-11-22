@@ -4,11 +4,11 @@ $ip_add = getenv("REMOTE_ADDR");
 include "db.php";
 if(isset($_POST["category"])){
 	$category_query = "SELECT * FROM categories";
-    
+
 	$run_query = mysqli_query($con,$category_query) or die(mysqli_error($con));
 	echo "
-		
-            
+
+
             <div class='aside'>
 							<h3 class='aside-title'>Categories</h3>
 							<div class='btn-group-vertical'>
@@ -16,7 +16,7 @@ if(isset($_POST["category"])){
 	if(mysqli_num_rows($run_query) > 0){
         $i=1;
 		while($row = mysqli_fetch_array($run_query)){
-            
+
 			$cid = $row["cat_id"];
 			$cat_name = $row["cat_title"];
             $sql = "SELECT COUNT(*) AS count_items FROM products WHERE product_cat=$i";
@@ -24,24 +24,24 @@ if(isset($_POST["category"])){
             $row = mysqli_fetch_array($query);
             $count=$row["count_items"];
             $i++;
-            
-            
+
+
 			echo "
-					
+
                     <div type='button' class='btn navbar-btn category' cid='$cid'>
-									
+
 									<a href='#'>
 										<span  ></span>
 										$cat_name
 										<small class='qty'>($count)</small>
 									</a>
 								</div>
-                    
+
 			";
-            
+
 		}
-        
-        
+
+
 		echo "</div>";
 	}
 }
@@ -56,7 +56,7 @@ if(isset($_POST["brand"])){
 	if(mysqli_num_rows($run_query) > 0){
         $i=1;
 		while($row = mysqli_fetch_array($run_query)){
-            
+
 			$bid = $row["brand_id"];
 			$brand_name = $row["brand_title"];
             $sql = "SELECT COUNT(*) AS count_items FROM products WHERE product_brand=$i";
@@ -65,10 +65,10 @@ if(isset($_POST["brand"])){
             $count=$row["count_items"];
             $i++;
 			echo "
-					
-                    
+
+
                     <div type='button' class='btn navbar-btn selectBrand' bid='$bid'>
-									
+
 									<a href='#'>
 										<span ></span>
 										$brand_name
@@ -88,8 +88,8 @@ if(isset($_POST["page"])){
 	for($i=1;$i<=$pageno;$i++){
 		echo "
 			<li><a href='#product-row' page='$i' id='page' class='active'>$i</a></li>
-            
-            
+
+
 		";
 	}
 }
@@ -111,11 +111,11 @@ if(isset($_POST["getProduct"])){
 			$pro_title = $row['product_title'];
 			$pro_price = $row['product_price'];
 			$pro_image = $row['product_image'];
-            
+
             $cat_name = $row["cat_title"];
 			echo "
-				
-                        
+
+
                         <div class='col-md-4 col-xs-6' >
 								<a href='product.php?p=$pro_id'><div class='product'>
 									<div class='product-img'>
@@ -147,7 +147,7 @@ if(isset($_POST["getProduct"])){
 									</div>
 								</div>
 							</div>
-                        
+
 			";
 		}
 	}
@@ -158,18 +158,18 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 	if(isset($_POST["get_seleted_Category"])){
 		$id = $_POST["cat_id"];
 		$sql = "SELECT * FROM products,categories WHERE product_cat = '$id' AND product_cat=cat_id";
-        
+
 	}else if(isset($_POST["selectBrand"])){
 		$id = $_POST["brand_id"];
 		$sql = "SELECT * FROM products,categories WHERE product_brand = '$id' AND product_cat=cat_id";
 	}else {
-        
+
 		$keyword = $_POST["keyword"];
         header('Location:store.php');
 		$sql = "SELECT * FROM products,categories WHERE product_cat=cat_id AND product_keywords LIKE '%$keyword%'";
-       
+
 	}
-	
+
 	$run_query = mysqli_query($con,$sql);
 	while($row=mysqli_fetch_array($run_query)){
 			$pro_id    = $row['product_id'];
@@ -180,8 +180,8 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 			$pro_image = $row['product_image'];
             $cat_name = $row["cat_title"];
 			echo "
-					
-                        
+
+
                         <div class='col-md-4 col-xs-6'>
 								<a href='product.php?p=$pro_id'><div class='product'>
 									<div class='product-img'>
@@ -216,14 +216,14 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 			";
 		}
 	}
-	
+
 
 
 	if(isset($_POST["addToCart"])){
-		
+
 
 		$p_id = $_POST["proId"];
-		
+
 
 		if(isset($_SESSION["uid"])){
 
@@ -241,7 +241,7 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 			";//not in video
 		} else {
 			$sql = "INSERT INTO `cart`
-			(`p_id`, `ip_add`, `user_id`, `qty`) 
+			(`p_id`, `ip_add`, `user_id`, `qty`)
 			VALUES ('$p_id','$ip_add','$user_id','1')";
 			if(mysqli_query($con,$sql)){
 				echo "
@@ -264,7 +264,7 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 					exit();
 			}
 			$sql = "INSERT INTO `cart`
-			(`p_id`, `ip_add`, `user_id`, `qty`) 
+			(`p_id`, `ip_add`, `user_id`, `qty`)
 			VALUES ('$p_id','$ip_add','-1','1')";
 			if (mysqli_query($con,$sql)) {
 				echo "
@@ -275,12 +275,12 @@ if(isset($_POST["get_seleted_Category"]) || isset($_POST["selectBrand"]) || isse
 				";
 				exit();
 			}
-			
+
 		}
-		
-		
-		
-		
+
+
+
+
 	}
 
 //Count User cart item
@@ -292,7 +292,7 @@ if (isset($_POST["count_item"])) {
 		//When user is not logged in then we will count number of item in cart by using users unique ip address
 		$sql = "SELECT COUNT(*) AS count_item FROM cart WHERE ip_add = '$ip_add' AND user_id < 0";
 	}
-	
+
 	$query = mysqli_query($con,$sql);
 	$row = mysqli_fetch_array($query);
 	echo $row["count_item"];
@@ -317,7 +317,7 @@ if (isset($_POST["Common"])) {
 			$n=0;
 			$total_price=0;
 			while ($row=mysqli_fetch_array($query)) {
-                
+
 				$n++;
 				$product_id = $row["product_id"];
 				$product_title = $row["product_title"];
@@ -327,8 +327,8 @@ if (isset($_POST["Common"])) {
 				$qty = $row["qty"];
 				$total_price=$total_price+$product_price;
 				echo '
-					
-                    
+
+
                     <div class="product-widget">
 												<div class="product-img">
 													<img src="product_images/'.$product_image.'" alt="">
@@ -337,40 +337,44 @@ if (isset($_POST["Common"])) {
 													<h3 class="product-name"><a href="#">'.$product_title.'</a></h3>
 													<h4 class="product-price"><span class="qty">'.$n.'</span>$'.$product_price.'</h4>
 												</div>
-												
+
 											</div>'
-                    
-                    
+
+
                     ;
-				
+
 			}
-            
+
             echo '<div class="cart-summary">
 				    <small class="qty">'.$n.' Item(s) selected</small>
 				    <h5>$'.$total_price.'</h5>
 				</div>'
             ?>
-				
-				
+
+
 			<?php
-			
+
 			exit();
 		}
+		else{
+		echo '<div class="cart-summary">
+			<h5 class="text-center">Your cart is empty!</h5>
+			</div>';
 	}
-	
-    
-    
+	}
+
+
     if (isset($_POST["checkOutDetails"])) {
 		if (mysqli_num_rows($query) > 0) {
 			//display user cart item with "Ready to checkout" button if user is not login
 			echo '<div class="main ">
 			<div class="table-responsive">
 			<form method="post" action="login_form.php">
-			
+
 	               <table id="cart" class="table table-hover table-condensed" id="">
     				<thead>
 						<tr>
-							<th style="width:50%">Product</th>
+							<th style="width:30%">Product</th>
 							<th style="width:10%">Price</th>
 							<th style="width:8%">Quantity</th>
 							<th style="width:7%" class="text-center">Subtotal</th>
@@ -390,12 +394,12 @@ if (isset($_POST["Common"])) {
 					$cart_item_id = $row["id"];
 					$qty = $row["qty"];
 
-					echo 
-						'  
+					echo
+						'
 						<tr>
 							<td data-th="Product" >
 								<div class="row">
-								
+
 									<div class="col-sm-4 "><img src="product_images/'.$product_image.'" style="height: 70px;width:75px;"/>
 									<h4 class="nomargin product-name header-cart-item-name"><a href="product.php?p='.$product_id.'">'.$product_title.'</a></h4>
 									</div>
@@ -403,8 +407,8 @@ if (isset($_POST["Common"])) {
 										<div style="max-width=50px;">
 										<p>'.$product_desc.'</div>
 									</div>
-									
-									
+
+
 								</div>
 							</td>
                             <input type="hidden" name="product_id[]" value="'.$product_id.'"/>
@@ -417,51 +421,51 @@ if (isset($_POST["Common"])) {
 							<td class="actions" data-th="">
 							<div class="btn-group">
 								<a href="#" class="btn btn-info btn-sm update" update_id="'.$product_id.'"><i class="fa fa-refresh"></i></a>
-								
-								<a href="#" class="btn btn-danger btn-sm remove" remove_id="'.$product_id.'"><i class="fa fa-trash-o"></i></a>		
-							</div>							
+
+								<a href="#" class="btn btn-danger btn-sm remove" remove_id="'.$product_id.'"><i class="fa fa-trash-o"></i></a>
+							</div>
 							</td>
 						</tr>
-					
-                            
+
+
                             ';
 				}
-				
+
 				echo '</tbody>
 				<tfoot>
-					
+
 					<tr>
 						<td><a href="store.php" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
 						<td colspan="2" class="hidden-xs"></td>
 						<td class="hidden-xs text-center"><b class="net_total" ></b></td>
 						<div id="issessionset"></div>
                         <td>
-							
+
 							';
 				if (!isset($_SESSION["uid"])) {
 					echo '
-					
+
 							<a href="" data-toggle="modal" data-target="#Modal_register" class="btn btn-success">Ready to Checkout</a></td>
 								</tr>
 							</tfoot>
-				
+
 							</table></div></div>';
                 }else if(isset($_SESSION["uid"])){
 					//Paypal checkout form
 					echo '
 					</form>
-					
+
 						<form action="checkout.php" method="post">
 							<input type="hidden" name="cmd" value="_cart">
 							<input type="hidden" name="business" value="shoppingcart@puneeth.com">
 							<input type="hidden" name="upload" value="1">';
-							  
+
 							$x=0;
 							$sql = "SELECT a.product_id,a.product_title,a.product_price,a.product_image,b.id,b.qty FROM products a,cart b WHERE a.product_id=b.p_id AND b.user_id='$_SESSION[uid]'";
 							$query = mysqli_query($con,$sql);
 							while($row=mysqli_fetch_array($query)){
 								$x++;
-								echo  	
+								echo
 
 									'<input type="hidden" name="total_count" value="'.$x.'">
 									<input type="hidden" name="item_name_'.$x.'" value="'.$row["product_title"].'">
@@ -469,8 +473,8 @@ if (isset($_POST["Common"])) {
 								     <input type="hidden" name="amount_'.$x.'" value="'.$row["product_price"].'">
 								     <input type="hidden" name="quantity_'.$x.'" value="'.$row["qty"].'">';
 								}
-							  
-							echo   
+
+							echo
 								'<input type="hidden" name="return" value="http://localhost/myfiles/public_html/payment_success.php"/>
 					                <input type="hidden" name="notify_url" value="http://localhost/myfiles/public_html/payment_success.php">
 									<input type="hidden" name="cancel_return" value="http://localhost/myfiles/public_html/cancel.php"/>
@@ -478,18 +482,56 @@ if (isset($_POST["Common"])) {
 									<input type="hidden" name="custom" value="'.$_SESSION["uid"].'"/>
 									<input type="submit" id="submit" name="login_user_with_product" name="submit" class="btn btn-success" value="Ready to Checkout">
 									</form></td>
-									
+
 									</tr>
-									
+
 									</tfoot>
-									
-							</table></div></div>    
+
+							</table></div></div>
 								';
 				}
 			}
+	else{
+		echo'
+		<div class="main">
+			<div class="table-responsive">
+				<form method="post" action="login_form.php">
+					<table id="cart" class="table table-hover table-condensed" id="">
+					<thead>
+					<tr>
+						<th style="width: 30%">Product</th>
+						<th style="width: 10%">Price</th>
+						<th style="width: 8%">Qantity</th>
+						<th style="width: 7%"" class="text-center>Subtotal</th>
+						<th style="width: 10%"></th>
+					</tr>
+					</thead>
+					<tbody>
+					</tbody>
+					<tfoot>
+
+					<tr>
+					<td><a href="store.php" class="btn btn-warning"><i class="fa fa-angle-left"></i></a></td>
+					<td class="text-left"><b>Your cart is empty!</b></td>
+					<div id="issessionset"></div>
+					</tr>
+					</tfoot>
+					</table></div></div>
+					</form>
+					</td>
+					</tr>
+					</tfoot>
+					</table></div></div>';
+				}
+
+
+
+
+
+
+
 	}
-	
-	
+
 }
 
 //Remove Item From cart
@@ -532,9 +574,3 @@ if (isset($_POST["updateCartItem"])) {
 
 
 ?>
-
-
-
-
-
-
